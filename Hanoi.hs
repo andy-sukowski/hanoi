@@ -4,11 +4,10 @@ import System.IO
 
 move :: Int -> Char -> Char -> Char -> [(Int, Char, Char)]
 move 0 _ _ _ = []
-move n a c b = move (n - 1) a b c ++ [(n, a, c)] ++ move (n - 1) b c a
+move n a b c = move (n - 1) a c b ++ [(n, a, c)] ++ move (n - 1) b a c
 
-pretty :: (Int, Char, Char) -> IO () 
-pretty (n, a, c) = do
-    putStrLn $ show n ++ ": " ++ [a] ++ " → " ++ [c]
+pretty :: (Int, Char, Char) -> String
+pretty (n, a, c) = show n ++ ": " ++ [a] ++ " → " ++ [c]
 
 main :: IO ()
 main = do
@@ -16,4 +15,4 @@ main = do
     hFlush stdout
     input <- getLine
     let n = read input :: Int 
-    mapM_ pretty $ move n 'a' 'c' 'b'
+    mapM_ putStrLn $ map pretty $ move n 'a' 'b' 'c'
